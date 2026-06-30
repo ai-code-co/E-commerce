@@ -1,75 +1,226 @@
-# React + TypeScript + Vite
+# MegaMart - Amazon Inspired E-Commerce Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, responsive Amazon-inspired e-commerce website built with **React**, **TypeScript**, **Redux Toolkit**, **Tailwind CSS**, and **Vite**.
 
-Currently, two official plugins are available:
+The project focuses on building a scalable frontend architecture while learning real-world state management using Redux Toolkit, API integration, responsive UI development, and component-based design.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## 📸 Preview
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+> UI inspired by the provided Figma design with a clean white theme and modern shopping experience.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🚀 Tech Stack
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- React
+- TypeScript
+- Vite
+- Redux Toolkit
+- React Redux
+- React Router DOM
+- Tailwind CSS
+- Axios
+- DummyJSON API
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## ✨ Features
 
+### Current Features
+
+- Responsive layout
+- Modern navigation bar
+- Hero banner / Carousel
+- Product cards
+- Category section
+- Brand showcase section
+- Footer
+- Product listing using public API
+- Product details page
+- Redux Toolkit integration
+- Loading & error handling
+
+---
+
+### Upcoming Features
+
+- Search products
+- Category filtering
+- Price sorting
+- Pagination
+- Shopping cart
+- Wishlist
+- Cart persistence using Local Storage
+- Fake authentication
+- Checkout page
+- Order summary
+- Skeleton loaders
+- Toast notifications
+- 404 page
+
+---
+
+## 📂 Project Structure
+
+```text
+src/
+│
+├── assets/             # Images, icons & static files
+├── components/         # Reusable UI components
+├── layouts/            # Shared layouts
+├── pages/              # Application pages
+├── redux/              # Store & feature slices
+├── services/           # API calls
+├── hooks/              # Custom hooks
+├── routes/             # Routing
+├── utils/              # Utility functions
+├── constants/          # Constant values
+├── App.tsx
+└── main.tsx
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🛍️ Planned Pages
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Home
+- Products
+- Product Details
+- Cart
+- Wishlist
+- Checkout
+- Login
+- 404 Page
+
+---
+
+## 📱 Responsive Design
+
+The application is being developed with a **mobile-first approach** and is optimized for:
+
+- Mobile
+- Tablet
+- Laptop
+- Desktop
+
+---
+
+## 🧠 Redux Features
+
+The project uses Redux Toolkit for managing global application state.
+
+### Planned Redux Slices
+
+- Product Slice
+- Category Slice
+- Cart Slice
+- Wishlist Slice
+- User Slice
+
+---
+
+## 🌐 API
+
+This project uses the **DummyJSON API** for fetching:
+
+- Products
+- Categories
+- Product Details
+- Search Results
+
+---
+
+## 🎯 Learning Goals
+
+This project is built to gain practical experience with:
+
+- React Component Architecture
+- Redux Toolkit
+- Async Thunks
+- API Integration
+- State Management
+- React Router
+- Responsive Design
+- Tailwind CSS
+- TypeScript
+- Scalable Folder Structure
+- Performance Optimization
+
+---
+
+## ⚙️ Getting Started
+
+Clone the repository
+
+```bash
+git clone <repository-url>
+```
+
+Navigate to the project
+
+```bash
+cd <project-folder>
+```
+
+Install dependencies
+
+```bash
+npm install
+```
+
+Run the development server
+
+```bash
+npm run dev
+```
+
+Open your browser
 
 ```
+http://localhost:5173
+```
+
+---
+
+## 📦 Production Build
+
+Build the project
+
+```bash
+npm run build
+```
+
+Preview the production build
+
+```bash
+npm run preview
+```
+
+---
+
+## 📌 Roadmap
+
+- [x] Project setup
+- [x] Redux configuration
+- [x] Routing setup
+- [ ] Navbar
+- [ ] Hero Carousel
+- [ ] Categories Section
+- [ ] Product Listing
+- [ ] Product Details
+- [ ] Search
+- [ ] Filtering
+- [ ] Sorting
+- [ ] Shopping Cart
+- [ ] Wishlist
+- [ ] Checkout
+- [ ] Responsive Design
+- [ ] Performance Optimization
+
+---
+
+## 📄 License
+
+This project is built for learning, portfolio, and educational purposes.
