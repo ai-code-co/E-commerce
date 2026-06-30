@@ -2,27 +2,32 @@
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { fetchProducts } from '../redux/features/product/productSlice';
-import  Hero from '../components/Hero';
-import { Categories } from '../components/Categories'; // 👈 Import Categories
+import Hero from '../components/Hero';
+import { Categories } from '../components/Categories'; 
 import { ProductCard } from '../components/ProductCard';
 
 export const Home = () => {
   const dispatch = useAppDispatch();
+  
+  // Destructure product and category elements from the Redux store
   const { items, status, error } = useAppSelector((state) => state.product);
-  const { selectedCategory } = useAppSelector((state) => state.category); // 👈 Watch active category
+  const { selectedCategory } = useAppSelector((state) => state.category); 
 
   useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
+    // Only fetch base products on load if the store is currently empty/idle
+    if (status === 'idle') {
+      dispatch(fetchProducts());
+    }
+  }, [dispatch, status]);
 
-  // Dynamic filter logic: If a category is selected, show only matching products
+  // Dynamic filter logic: If a category is selected, filter matching items locally.
+  // Otherwise, display items directly (which naturally adapts to global search results).
   const filteredProducts = selectedCategory
-  ? items.filter((product) => {
-      // Prevent undefined or missing category strings from crashing the app
-      if (!product.category) return false;
-      return product.category.toLowerCase() === selectedCategory.toLowerCase();
-    })
-  : items;
+    ? items.filter((product) => {
+        if (!product.category) return false;
+        return product.category.toLowerCase() === selectedCategory.toLowerCase();
+      })
+    : items;
 
   return (
     <div className="bg-gray-50 min-h-screen pb-12">
@@ -30,16 +35,20 @@ export const Home = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
         
-        {/* 👈 Render the interactive Categories track component */}
+        {/* Render the interactive Categories track component */}
         <Categories />
 
-        {/* Section Title Header */}
+        {/* Section Title Header - UPDATED: Dynamically changes context based on state */}
         <div className="flex items-center justify-between mb-6 border-b border-gray-200 pb-3 mt-8">
           <h2 className="text-2xl font-bold text-gray-800 tracking-tight">
             {selectedCategory ? (
-              <span>Showing results for <span className="text-blue-600 capitalize">"{selectedCategory.replace('-', ' ')}"</span></span>
+              <span>
+                Showing results for <span className="text-blue-600 capitalize">"{selectedCategory.replace('-', ' ')}"</span>
+              </span>
             ) : (
-              <span>Grab the Best Deals on <span className="text-blue-600">Featured Products</span></span>
+              <span>
+                Discover <span className="text-blue-600">Our Products</span>
+              </span>
             )}
           </h2>
         </div>
@@ -59,7 +68,7 @@ export const Home = () => {
 
         {status === 'failed' && error && (
           <div className="bg-red-50 text-red-700 p-4 rounded-xl text-center font-medium border border-red-100">
-            Error fetching products: {error}. Please try reloading the app.
+            Error loading results: {error}. Please try a different query.
           </div>
         )}
 
@@ -72,8 +81,11 @@ export const Home = () => {
               ))}
             </div>
           ) : (
-            <div className="text-center py-12 text-gray-500 font-medium">
-              No products found in this category.
+            <div className="text-center py-16 bg-white border border-gray-100 rounded-2xl shadow-sm my-4">
+              <span className="text-4xl">🔍</span>
+              <p className="text-gray-500 font-semibold mt-3 text-base">
+                No matching items found. Try checking your spelling or using different keywords!
+              </p>
             </div>
           )
         )}

@@ -1,8 +1,15 @@
-import { Link } from 'react-router-dom';
+// src/components/Navbar.tsx
+import React, { useState, useEffect } from 'react'; // 👈 Added useEffect
+import { Link, useNavigate } from 'react-router-dom';
 import { FiSearch, FiShoppingCart, FiUser, FiMenu, FiChevronDown } from 'react-icons/fi';
+import { useAppDispatch } from '../redux/hooks';
+import { searchProducts, resetProductStatus } from '../redux/features/product/productSlice'; // 👈 Imported resetProductStatus
 
-export default function Navbar() {
-  // Array of categories to keep our code clean and avoid repeating HTML
+export const Navbar: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState('');
+
   const categories = [
     'Groceries', 
     'Premium Fruits', 
@@ -13,6 +20,22 @@ export default function Navbar() {
     'Home Improvement', 
     'Sports, Toys & Luggage'
   ];
+
+  // 👈 NEW FIX: Watch the search input string live
+  useEffect(() => {
+    // If the user clears the text out of the input box entirely
+    if (searchQuery.trim() === '') {
+      dispatch(resetProductStatus()); // Instantly flag state as idle to trigger a full products reload
+    }
+  }, [searchQuery, dispatch]);
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      dispatch(searchProducts(searchQuery)); 
+      navigate('/'); 
+    }
+  };
 
   return (
     <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
@@ -29,17 +52,24 @@ export default function Navbar() {
         </Link>
 
         {/* Search Bar */}
-        <div className="hidden md:flex grow max-w-2xl items-center bg-gray-100 rounded-md px-4 py-2.5">
-          <FiSearch className="text-gray-500 mr-3 text-lg" />
+        <form 
+          onSubmit={handleSearchSubmit} 
+          className="hidden md:flex grow max-w-2xl items-center bg-gray-100 rounded-md px-4 py-2.5 focus-within:ring-2 focus-within:ring-blue-500 focus-within:bg-white transition-all border border-transparent"
+        >
+          <button type="submit" className="text-gray-500 mr-3 text-lg hover:text-blue-600 transition-colors">
+            <FiSearch />
+          </button>
           <input
             type="text"
             placeholder="Search essentials, groceries and more..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)} // Binds string updates locally
             className="bg-transparent outline-none grow text-sm text-gray-700"
           />
           <div className="border-l border-gray-300 pl-4 ml-2 cursor-pointer hover:text-blue-500 transition">
             <FiMenu className="text-gray-500 text-lg" />
           </div>
-        </div>
+        </form>
 
         {/* User Actions */}
         <div className="flex items-center gap-6 text-sm font-medium text-gray-700">
@@ -48,7 +78,6 @@ export default function Navbar() {
             <span className="hidden sm:block">Sign Up/Sign In</span>
           </Link>
           
-          {/* Cart Indicator */}
           <Link to="/cart" className="flex items-center gap-2 hover:text-blue-600 transition">
             <FiShoppingCart className="text-lg" />
             <span className="hidden sm:block">Cart</span>
@@ -61,6 +90,7 @@ export default function Navbar() {
         {categories.map((category, index) => (
           <button
             key={index}
+            type="button"
             className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors ${
               index === 0 
                 ? 'bg-blue-500 text-white' 
@@ -74,4 +104,4 @@ export default function Navbar() {
       
     </header>
   );
-}
+};

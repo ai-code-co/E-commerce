@@ -40,6 +40,14 @@ export const fetchProductById = createAsyncThunk(
   }
 );
 
+export const searchProducts = createAsyncThunk(
+  'product/searchProducts',
+  async (query: string) => {
+    const response = await api.get(`/products/search?q=${query}`);
+    return response.data.products; // Returns an array of products matching the query string
+  }
+);
+
 // 3. Create the Async Thunk to fetch data
 export const fetchProducts = createAsyncThunk(
   'product/fetchProducts',
@@ -59,6 +67,9 @@ const productSlice = createSlice({
     clearSelectedProduct: (state) => {
       state.selectedProduct = null;
     },
+    resetProductStatus: (state) => {
+        state.status = 'idle';
+    }
 },
   extraReducers: (builder) => {
     builder
@@ -85,9 +96,21 @@ const productSlice = createSlice({
       .addCase(fetchProductById.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message || 'Failed to load product details';
+      })
+      .addCase(searchProducts.pending, (state) => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(searchProducts.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.items = action.payload; // Replaces current array with matching search results
+      })
+      .addCase(searchProducts.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message || 'Search query failed';
       });
   },
 });
 
-export const { clearSelectedProduct } = productSlice.actions;
+export const { clearSelectedProduct,resetProductStatus } = productSlice.actions;
 export default productSlice.reducer;

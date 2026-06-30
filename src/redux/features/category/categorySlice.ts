@@ -1,6 +1,7 @@
 // src/redux/features/category/categorySlice.ts
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api  from '../../../services/api';
+import { searchProducts } from '../product/productSlice'
 
 export interface CategoryState {
   list: string[];
@@ -49,6 +50,9 @@ const categorySlice = createSlice({
       .addCase(fetchCategories.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message || 'Failed to fetch categories';
+      })
+      .addCase(searchProducts.pending, (state) => {
+        state.selectedCategory = null;
       });
   },
 });
